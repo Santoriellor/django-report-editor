@@ -1,0 +1,26 @@
+<!-- base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Your Website{% endblock %}</title>
+    <!-- Include CSS and other necessary files here -->
+    <link rel="stylesheet" href="{% static 'common/styles.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <!-- Include the menu -->
+    {% include 'common/navbar.html' %}
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Include any JavaScript files if needed -->
+    <script src="{% static 'common/scripts.js' %}"></script>
+</body>
+</html>

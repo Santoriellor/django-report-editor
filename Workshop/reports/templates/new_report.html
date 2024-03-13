@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 id="report_title">Titre</h2>
+    <form method="post">
+        {% csrf_token %}
+        test{{ form.id }}test
+        {{ form.date_report.label }}
+        {{ form.date_report }}
+        {{ form.client.label }}
+        {{ form.client }}
+        {{ form.motor_serial_number.label }}
+        {{ form.motor_serial_number }}
+        {{ form.info.label }}
+        {{ form.info }}
+        {{ form.accessory_motor.label }}
+        {{ form.accessory_motor }}
+        <button type="submit">Enregistrer</button>
+    </form>
+</div>
+{% endblock %}

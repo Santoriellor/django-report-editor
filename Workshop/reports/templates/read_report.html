@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Numéro du rapport : {{ report.id }}</h2>
+    <p>Identifiant client : {{ report.client_id }}</p>
+    <p>Nom client : {{ client.last_name|title }}</p>
+    <p>Informations client : {{ report.info|capitalize_first }}</p>
+    <p>N° série moteur : {{ report.motor_serial_number }}</p>
+    <input type="button" value="Exporter">
+</div>
+{% endblock %}
