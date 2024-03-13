@@ -5,7 +5,6 @@
     <h2 id="report_title">Titre</h2>
     <form method="post">
         {% csrf_token %}
-        test{{ form.id }}test
         {{ form.date_report.label }}
         {{ form.date_report }}
         {{ form.client.label }}

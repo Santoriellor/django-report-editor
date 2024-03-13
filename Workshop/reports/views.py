@@ -1,12 +1,17 @@
-# from django.http import HttpResponse
-import json
-
 from django.db import connection
 from django.http import JsonResponse
 from django.urls import reverse
 from django.shortcuts import redirect, render, get_object_or_404
 from .forms import ReportForm, ClientForm
 from .models import Report, Client, MotorOwner, MotorModel
+
+# for testing purpose
+import win32api
+# test sequence
+# def show_alert(title, message):
+#     win32api.MessageBox(0, message, title, 0x00001000)
+# show_alert("Alert", f"id:{form.data} end")
+# end test sequence
 
 
 # Create your views here.
@@ -20,38 +25,31 @@ def read_report(request, report_id=1):
     return render(request, 'read_report.html', {'report': report, 'client': client})
 
 
-def update_report(request, report_id):
-    pass
+def update_report(request, id):
+    report = Report.objects.get(pk=id)
+    if request.method == 'POST':
+        form = ReportForm(request.POST, instance=report)
+        if form.is_valid():
+            form.save()  # Update the existing instance
+            return redirect('list_reports')  # Redirect to 'list_reports'
+    else:
+        form = ReportForm(instance=report)
+    return render(request, 'new_report.html', {'form': form})
 
 
-def delete_report(request, report_id):
+def delete_report(request, id):
     pass
 
 
 def new_report(request):
+
     if request.method == 'POST':
         form = ReportForm(request.POST)
         if form.is_valid():
-            # update if report exist
-            # id_value = form.cleaned_data['id']
-            id_value = request.POST.get('list_report_id')
-            try:
-                instance = Report.objects.get(pk=id_value)
-                form.instance = instance  # Assign the instance to the form
-                form.save()  # Update the existing instance
-                return redirect('list_reports')
-            except Report.DoesNotExist:
-                pass
-            # save if report does not exist
-            # form.save()
+            form.save()
             return redirect('list_reports')  # Redirect to 'list_reports'
     else:
-        if request.GET.get('list_report_id'):
-            report_id = request.GET.get('list_report_id')
-            report = Report.objects.get(pk=report_id)
-            form = ReportForm(instance=report)
-        else:
-            form = ReportForm()
+        form = ReportForm()
     return render(request, 'new_report.html', {'form': form})
 
 
@@ -67,8 +65,8 @@ def list_reports(request):
                 report = get_object_or_404(Report, pk=row[0])
                 client = get_object_or_404(Client, pk=client_id)
                 text_report = report.date_report.strftime('%m/%d/%Y') + " - Rapport n°" + str(report.id) + " - " + client.last_name.capitalize()
-                url_update = reverse('new_report') + f"?list_report_id={report.id}"
-                url_read = reverse('read_report') + f"?list_report_id={report.id}"
+                url_update = reverse('update_report', kwargs={'id': report.id})
+                url_read = reverse('read_report', kwargs={'id': report.id})
                 row_str = f"<a href='{url_read}'>{text_report}</a> - <a href='{url_update}'>Modifier</a>"
                 report_links.append(row_str)
     # Pass the report_links list as a context variable

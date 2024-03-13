@@ -52,6 +52,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(data) {
                 var motorSelect = $('#id_motor_serial_number');
+                var motor_serial = motorSelect.val()
                 motorSelect.empty();
                 if (data.motors.length === 0) {
                     // If no motors are returned, manually append the empty option
@@ -61,10 +62,18 @@ $(document).ready(function() {
                     }));
                 } else {
                     $.each(data.motors, function(index, motor) {
-                        motorSelect.append($('<option>', {
-                            value: motor.serial_number,
-                            text: motor.serial_number
-                        }));
+                        if (motor.serial_number == motor_serial) {
+                            motorSelect.append($('<option>', {
+                                selected: true,
+                                value: motor.serial_number,
+                                text: motor.serial_number
+                            }));
+                        } else {
+                            motorSelect.append($('<option>', {
+                                value: motor.serial_number,
+                                text: motor.serial_number
+                            }));
+                        }
                     });
                     // Change the motor select to disabled false
                     var selectMotorElement = document.getElementById('id_motor_serial_number');

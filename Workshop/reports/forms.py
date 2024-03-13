@@ -19,7 +19,7 @@ class ReportForm(forms.ModelForm):
 
     class Meta:
         model = Report
-        fields = ['id', 'date_report', 'client', 'motor_serial_number', 'info', 'accessory_motor']
+        fields = ['date_report', 'client', 'motor_serial_number', 'info', 'accessory_motor']
         # fields = '__all__'
         # exclude = ['exported']
         labels = {
@@ -30,7 +30,6 @@ class ReportForm(forms.ModelForm):
         }
         widgets = {
             # "date_report": forms.DateField(attrs={'readonly': True}),
-            # 'id': forms.HiddenInput(),  # Make the id field hidden
             "info": forms.Textarea(attrs={"rows": 4, "style": "width: 100%; resize: none; padding: 5px;"}),
             "accessory_motor": forms.CheckboxInput(),
         }

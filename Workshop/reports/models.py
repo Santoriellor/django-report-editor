@@ -241,6 +241,7 @@ class Report(models.Model):
     work_hour_price = models.DecimalField(max_digits=15, decimal_places=2, null=True)
     total_work_price = models.DecimalField(max_digits=15, decimal_places=2, null=True)
     total_material_price = models.DecimalField(max_digits=15, decimal_places=2, null=True)
+    extras = models.TextField(blank=True, null=True)
     exported = models.BooleanField(default=False)
 
     def get_motor_owner(self):
@@ -271,3 +272,8 @@ class Report(models.Model):
             except SparkPlug.DoesNotExist:
                 return None
         return None
+
+
+class PriceRef(models.Model):
+    ref = models.CharField(max_length=150, primary_key=True)
+    price = models.DecimalField(max_digits=15, decimal_places=2, default=0)
