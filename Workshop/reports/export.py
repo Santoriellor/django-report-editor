@@ -1,7 +1,6 @@
 import os
 
 import pandas as pd
-import win32api
 from django.shortcuts import get_object_or_404
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -22,10 +21,7 @@ def export_data(report_id):
         "rapport": report.id,
         "moteur": report.motor_serial_number,
     }
-    def show_alert(title, message):
-        win32api.MessageBox(0, message, title, 0x00001000)
-
-    show_alert("Alert", f"Export: {data}")
+    print(data)
     # Export data to PDF
     # pdf_path = generate_pdf_report(data)
     # Export data to XLS

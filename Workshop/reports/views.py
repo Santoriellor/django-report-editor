@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from django.urls import reverse
 from django.shortcuts import redirect, render, get_object_or_404
 
-from .export import export_data
 from .forms import ReportForm, ClientForm
+from .invoice_calculator import invoice_calculator
 from .models import Report, Client, MotorOwner, MotorModel
 
 # for testing purpose
@@ -105,7 +105,7 @@ def list_exported(request):
 
 
 def export_report_pdf(request, report_id):
-    export_data(report_id)
+    invoice_calculator(report_id)
     return redirect('list_exported')
 
 
