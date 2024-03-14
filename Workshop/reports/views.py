@@ -2,31 +2,31 @@ from django.db import connection
 from django.http import JsonResponse
 from django.urls import reverse
 from django.shortcuts import redirect, render, get_object_or_404
+
+from .export import export_data
 from .forms import ReportForm, ClientForm
 from .models import Report, Client, MotorOwner, MotorModel
 
 # for testing purpose
 import win32api
-# test sequence
+# testsequence
 # def show_alert(title, message):
 #     win32api.MessageBox(0, message, title, 0x00001000)
-# show_alert("Alert", f"id:{form.data} end")
-# end test sequence
+#
+# show_alert("Alert", f"no save")
+# endtestsequence
 
 
 # Create your views here.
 # Show the selected report
-def read_report(request, report_id=1):
-    # Get the value of the 'list_report_id' parameter from the URL
-    if request.GET.get('list_report_id'):
-        report_id = request.GET.get('list_report_id')
+def read_report(request, report_id):
     report = get_object_or_404(Report, pk=report_id)
     client = get_object_or_404(Client, pk=report.client_id)
     return render(request, 'read_report.html', {'report': report, 'client': client})
 
 
-def update_report(request, id):
-    report = Report.objects.get(pk=id)
+def update_report(request, report_id):
+    report = get_object_or_404(Report, pk=report_id)
     if request.method == 'POST':
         form = ReportForm(request.POST, instance=report)
         if form.is_valid():
@@ -41,13 +41,21 @@ def delete_report(request, id):
     pass
 
 
-def new_report(request):
+def export_report(request, report_id):
+    report = Report.objects.get(pk=report_id)
+    report.exported = True
+    report.save()
+    return redirect('list_exported')
 
+
+def new_report(request):
     if request.method == 'POST':
         form = ReportForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('list_reports')  # Redirect to 'list_reports'
+        else:
+            pass
     else:
         form = ReportForm()
     return render(request, 'new_report.html', {'form': form})
@@ -56,7 +64,7 @@ def new_report(request):
 def list_reports(request):
     # Run a raw SQL query
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM reports_report")
+        cursor.execute("SELECT * FROM reports_report WHERE exported = 0")
         rows = cursor.fetchall()
         report_links = []
         for row in rows:
@@ -65,17 +73,40 @@ def list_reports(request):
                 report = get_object_or_404(Report, pk=row[0])
                 client = get_object_or_404(Client, pk=client_id)
                 text_report = report.date_report.strftime('%m/%d/%Y') + " - Rapport n°" + str(report.id) + " - " + client.last_name.capitalize()
-                url_update = reverse('update_report', kwargs={'id': report.id})
-                url_read = reverse('read_report', kwargs={'id': report.id})
-                row_str = f"<a href='{url_read}'>{text_report}</a> - <a href='{url_update}'>Modifier</a>"
+                url_read = reverse('read_report', kwargs={'report_id': report.id})
+                url_update = reverse('update_report', kwargs={'report_id': report.id})
+                url_export = reverse('export_report', kwargs={'report_id': report.id})
+                row_str = f"<a href='{url_read}'>{text_report}</a> - <a href='{url_update}'><button type='button'>Modifier</button></a> - <a href='{url_export}'><button type='button'>Exporter</button></a>"
                 report_links.append(row_str)
     # Pass the report_links list as a context variable
     context = {'report_links': report_links}
     return render(request, 'list_report.html', context)
 
 
-def exported_reports(request):
-    pass
+def list_exported(request):
+    # Run a raw SQL query
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM reports_report WHERE exported = 1")
+        rows = cursor.fetchall()
+        report_links = []
+        for row in rows:
+            client_id = row[134]
+            if client_id:
+                report = get_object_or_404(Report, pk=row[0])
+                client = get_object_or_404(Client, pk=client_id)
+                text_report = report.date_report.strftime('%m/%d/%Y') + " - Rapport n°" + str(
+                    report.id) + " - " + client.last_name.capitalize()
+                url_export_pdf = reverse('export_report_pdf', kwargs={'report_id': report.id})
+                row_str = f"{text_report} - <a href='{url_export_pdf}'><button type='button'>Export PDF</button></a>"
+                report_links.append(row_str)
+    # Pass the report_links list as a context variable
+    context = {'report_links': report_links}
+    return render(request, 'list_exported.html', context)
+
+
+def export_report_pdf(request, report_id):
+    export_data(report_id)
+    return redirect('list_exported')
 
 
 def new_client(request):
@@ -97,7 +128,7 @@ def new_client(request):
     return render(request, 'new_client.html', {'form': form})
 
 
-def update_client(request):
+def list_client(request):
     # Run a raw SQL query
     with (connection.cursor() as cursor):
         cursor.execute("SELECT * FROM reports_client")
@@ -110,7 +141,7 @@ def update_client(request):
             text_client += " - tél. " + client.phone_number1
             url_update = reverse('new_client') + f"?list_client_id={client.id}"
             url_new = reverse('new_client') + f"?infos_client={client_id}"
-            row_str = f"<a href='{url_new}'>{text_client}</a> - <a href='{url_update}'>Modifier</a>"
+            row_str = f"<a href='{url_new}'>{text_client}</a> - <a href='{url_update}'><button type='button'>Modifier</button></a>"
             client_links.append(row_str)
     # Pass the client_links list as a context variable
     context = {'client_links': client_links}

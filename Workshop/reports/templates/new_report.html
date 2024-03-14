@@ -5,16 +5,31 @@
     <h2 id="report_title">Titre</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.date_report.label }}
-        {{ form.date_report }}
-        {{ form.client.label }}
-        {{ form.client }}
-        {{ form.motor_serial_number.label }}
-        {{ form.motor_serial_number }}
-        {{ form.info.label }}
-        {{ form.info }}
-        {{ form.accessory_motor.label }}
-        {{ form.accessory_motor }}
+        <div class="field-header">
+            <label for="id_date_report">{{ form.date_report.label }}</label>
+                    {{ form.date_report }}
+            <label for="id_client">{{ form.client.label }}</label>
+                    {{ form.client }}
+            <label for="id_motor_serial_number">{{ form.motor_serial_number.label }}</label>
+                    {{ form.motor_serial_number }}
+            <label for="id_info">{{ form.info.label }}</label>
+                    {{ form.info }}
+        </div>
+    {% for group_name, fields in form.grouped_fields.items %}
+        <div class="field-group">
+            <p><h3>{{ group_name|capitalize_first }}</h3></p>
+            <div class="field-group">
+            {% for field in fields %}
+                <p>
+                    <label for="id_{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                    {{ field.errors }}
+                </p>
+            {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+        {{ form.errors }}
         <button type="submit">Enregistrer</button>
     </form>
 </div>
