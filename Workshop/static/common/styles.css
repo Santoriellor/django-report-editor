@@ -1,23 +1,13 @@
 * {
     padding: 0;
     margin: 0;
-    font-family: 'Segoe UI';
+    font-family: "Fira Mono", monospace;
     box-sizing: border-box;
 }
 
-li {
-    list-style: none;
-}
-
-a, a:visited {
-    text-decoration: none;
-    color: black;
-    /* text-transform: capitalize; */
-}
-
-a:hover {
-    color: white;
-}
+*:before, *:after {
+    box-sizing: inherit;
+  }
 
 body {
     overflow-y: scroll; /* Always show vertical scrollbar */
@@ -27,116 +17,191 @@ body {
  }
 
 /* ******************* NAV BAR ******************* */
-#nav_header {
-    /* Add padding to the top equal to or greater than the height of the navbar */
-    height: 5vw;
-    min-height: 50px;
-    max-height: 80px;
-}
 
-nav {
-    position: fixed; /* Make the navbar fixed in the viewport */
-    top: 0; /* Align the navbar to the top of the viewport */
-    width: 100%;
+.menu {
+    background: skyblue;
+    height: 3rem;
+  }
+  .menu ol {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .menu > ol {
+    max-width: 1000px;
+    padding: 0 1rem;
+    display: flex;
+  }
+  .menu > ol > .menu-item {
+    flex: 1;
+    padding: 0.5rem 0;
+  }
+  .menu > ol > .menu-item:after {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    bottom: 5px;
+    left: calc(50% - 2px);
+    background: rgb(40, 173, 226);
+    will-change: transform;
+    transform: scale(0);
+    transition: transform 0.2s ease;
+  }
+  .menu > ol > .menu-item:hover:after {
+    transform: scale(1);
+  }
+  .menu-item {
+    position: relative;
+    line-height: 2rem;
+    text-align: center;
+    color: #FFF;
+    cursor: default;
+  }
+  .menu-item a {
+    text-decoration: none;
     overflow: hidden;
-    background-color: skyblue;
-    display: flex;
-    justify-content: space-between;
-    /* opacity: 0.9; */
-    padding: 10px 20px 10px 10px;
-    font-size: calc(0.5rem + 1vw);
-}
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    color: #FFF;
+  }
+  .sub-menu .menu-item {
+    padding: 0.5rem 0;
+    background: skyblue;
+    opacity: 0;
+    transform-origin: bottom;
+    animation: enter 0.2s ease forwards;
+  }
+  .sub-menu .menu-item:nth-child(1) {
+    animation-duration: 0.2s;
+    animation-delay: 0s;
+  }
+  .sub-menu .menu-item:nth-child(2) {
+    animation-duration: 0.3s;
+    animation-delay: 0.1s;
+  }
+  .sub-menu .menu-item:nth-child(3) {
+    animation-duration: 0.4s;
+    animation-delay: 0.2s;
+  }
+  .sub-menu .menu-item:hover {
+    background: #F8B195;
+    transition: 0.5s;
+  }
+  .sub-menu .menu-item a {
+    padding: 0 0.75rem;
+  }
+  @media screen and (max-width: 750px) {
+    .sub-menu .menu-item {
+      background: skyblue;
+    }
+  }
 
-nav h3 {
-    text-transform: uppercase;
-}
+  @media screen and (max-width: 750px) {
+    .menu {
+      position: relative;
+    }
+    .menu:after {
+      content: "";
+      position: absolute;
+      top: calc(50% - 2px);
+      right: 1rem;
+      width: 30px;
+      height: 4px;
+      background: white;
+      box-shadow: 0 10px white, 0 -10px white;
+    }
+    .menu > ol {
+      display: none;
+      background: skyblue;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+      animation: fade 0.2s ease-out;
+    }
+    .menu > ol > .menu-item {
+      flex: 0;
+      opacity: 0;
+      animation: enter 0.3s ease-out forwards;
+    }
+    .menu > ol > .menu-item:nth-child(1) {
+      animation-delay: 0s;
+    }
+    .menu > ol > .menu-item:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+    .menu > ol > .menu-item:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+    .menu > ol > .menu-item:nth-child(4) {
+      animation-delay: 0.3s;
+    }
+    .menu > ol > .menu-item:nth-child(5) {
+      animation-delay: 0.4s;
+    }
+    .menu > ol > .menu-item + .menu-item {
+      margin-top: 0.75rem;
+    }
+    .menu > ol > .menu-item:after {
+      left: auto;
+      right: 1rem;
+      bottom: calc(50% - 2px);
+    }
+    .menu > ol > .menu-item:hover {
+      z-index: 1;
+    }
+    .menu:hover > ol {
+      display: flex;
+    }
+    .menu:hover:after {
+      box-shadow: none;
+    }
+  }
 
-nav ul {
-    display: flex;
-    justify-content: right;
-    width: 80%;
-    padding: 0 20px 0 0;
-}
-
-/* The container <li> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-  height: 100%;
-  padding: 0 20px;
-}
-
-.dropdown:hover {
-    color: white;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: fixed;
-  background-color: skyblue;
-  width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  transition: 0.3s;
-  font-size: calc(0.2rem + 1vw);
-  padding: 0;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-    color: white;
-    background-color: rgb(115, 202, 237);
-}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-#icons {
-    cursor: pointer;
+  .sub-menu {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    left: 0;
     display: none;
-}
+    z-index: 1;
+  }
+  .menu-item:hover > .sub-menu {
+    display: block;
+  }
 
+  @media screen and (max-width: 750px) {
+    .sub-menu {
+      width: 100vw;
+      left: -2rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: scaleY(0.98) translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+/* ******************************* end of CSS for NAVBAR **************************** */
+/* ********************** A VERIFIER
 @media (max-width: 750px) {
-    #icons {
-        display: block;
-    }
-    #icons:before {
-        content: "\2630"
-    }
-    .active #icons:before {
-        content: "\2715";
-    }
-    nav ul {
-        position: fixed;
-        left: -100%;
-        top: 5%;
-        flex-direction: column;
-        background: skyblue;
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-    }
-    .dropdown {
-        font-size: calc(0.3rem + 1vw);
-        padding: 5px 0;
-    }
-    nav li:hover {
-        background-color: rgb(115, 202, 237);
-    }
-    nav.active ul {
-        left: 0;
-    }
-
     .check label,
     input {
         width: 80%; /* Set full width for smaller screens */
@@ -175,30 +240,110 @@ nav ul {
     color: grey;
 }
 
-.field-group {
+/* **************************** Report *************************** */
+.report {
+    max-width: 90%; /* Adjust as needed */
+    margin: 0 auto;   /* Center the container horizontally */
+    padding: 0 0 20px 0;
+    text-align: center; /* Center the text content horizontally */
     display: flex;
     flex-direction: column;
-    font-size: calc(0.2rem + 1vw);
+    justify-content: center; /* Center the flex items horizontally */
+    align-items: center; /* Center the flex items vertically */
 }
-
-input[type="text"], input[type="email"], select {
-    width: 100%;
-    margin-bottom: 10px;
+.report > h2 {
+    padding: 5px;
+}
+.report > form {
+    width:100%;
+}
+.report > form > .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
     padding: 10px;
-    box-sizing: border-box;
+    width: 100%;
 }
-
-button[type="submit"], button[type="button"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
+.report > form > button {
+    text-decoration: none;
+    background-color: darkgrey;
+    color: black;
+    padding: 5px 10px;
+    border: solid 1px black;
+    border-radius: 7px;
     cursor: pointer;
     display: inline;
-    margin: 0 auto;
+    margin: 10px 5px;
+    box-shadow: 2px 2px 5px 2px lightgrey;
+    transition: transform 0.1s ease;
+}
+.report > form > button:hover {
+    background-color: lightgrey;
+    transition: 0.3s;
+    transform: translateY(2px) translateX(1px);
 }
 
-button[type="submit"]:hover, button[type="button"]:hover {
-    background-color: #45a049;
+/* **************************** Listing *************************** */
+.listing {
+    max-width: 90%; /* Adjust as needed */
+    margin: 0 auto;   /* Center the container horizontally */
+    padding: 0 0 20px 0;
+    text-align: center; /* Center the text content horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the flex items horizontally */
+    align-items: center; /* Center the flex items vertically */
+}
+.listing > h2 {
+    padding: 5px;
+}
+
+.listing > .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+}
+
+.item {
+    flex: 1;
+    text-align: left;
+}
+
+.listing > .row > .buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.listing > .row > .buttons > a {
+    text-decoration: none;
+    background-color: darkgrey;
+    color: black;
+    padding: 5px 10px;
+    border: solid 1px black;
+    border-radius: 7px;
+    cursor: pointer;
+    display: inline;
+    margin: 0 5px;
+    box-shadow: 2px 2px 5px 2px lightgrey;
+    transition: transform 0.1s ease;
+}
+
+.listing > .row > .buttons > a:nth-child(1):hover {
+    background-color: lightgrey;
+    transition: 0.3s;
+    transform: translateY(2px) translateX(1px);
+}
+.listing > .row > .buttons > a:nth-child(2):hover {
+    background-color: darksalmon;
+    transition: 0.3s;
+    transform: translateY(2px) translateX(1px);
+}
+.listing > .row > .buttons > a:nth-child(3):hover {
+    background-color: lightgrey;
+    transition: 0.3s;
+    transform: translateY(2px) translateX(1px);
 }

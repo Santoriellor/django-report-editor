@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404
 
-from .models import Report, PriceRef, Client
+from .models import Report, Client
 
 # for testing purpose
 import win32api
+
+
 # testsequence
 def show_alert(title, message):
     win32api.MessageBox(0, message, title, 0x00001000)

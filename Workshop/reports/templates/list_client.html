@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="listing">
     <h2>Clients</h2>
     {% for client_link in client_links %}
         <p>{{ client_link|safe }}</p>

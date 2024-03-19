@@ -1,34 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-    <h2 id="report_title">Titre</h2>
+<div class="report">
+    <h2 id="report_title">
+        {% if form.instance.pk %}
+        <p>Rapport n° {{ form.instance.pk }}</p>
+        {% else %}
+        <p>Nouveau rapport</p>
+        {% endif %}
+    </h2>
     <form method="post">
         {% csrf_token %}
-        <div class="field-header">
-            <label for="id_date_report">{{ form.date_report.label }}</label>
-                    {{ form.date_report }}
-            <label for="id_client">{{ form.client.label }}</label>
-                    {{ form.client }}
-            <label for="id_motor_serial_number">{{ form.motor_serial_number.label }}</label>
-                    {{ form.motor_serial_number }}
+        <div class="row">
+            <p><label for="id_date_report">{{ form.date_report.label }}</label>
+                    {{ form.date_report }}</p>
+<!--            <label for="id_client">{{ form.client.label }}</label>-->
+            <p>        {{ form.client }}</p>
+            <p><label for="id_motor_serial_number">{{ form.motor_serial_number.label }}</label>
+                    {{ form.motor_serial_number }}</p>
+        </div>
+        <div class="row">
             <label for="id_info">{{ form.info.label }}</label>
                     {{ form.info }}
         </div>
-    {% for group_name, fields in form.grouped_fields.items %}
-        <div class="field-group">
-            <p><h3>{{ group_name|capitalize_first }}</h3></p>
-            <div class="field-group">
-            {% for field in fields %}
+        <div class="row">
+        {% for field in form %}
+            {% if field.name|slice:":5" == "item_" %}
                 <p>
-                    <label for="id_{{ field.name }}">{{ field.label }}</label>
+                    <label>{{ field.label|capitalize_first }}</label>
                     {{ field }}
-                    {{ field.errors }}
                 </p>
-            {% endfor %}
-            </div>
+            {% endif %}
+        {% endfor %}
         </div>
-    {% endfor %}
         {{ form.errors }}
         <button type="submit">Enregistrer</button>
     </form>

@@ -1,36 +1,16 @@
-// ********************************* Javascript for the navbar
-const links = document.querySelectorAll("nav li");
-icons.addEventListener("click", () => {
-    nav.classList.toggle("active");
-});
-links.forEach((link) => {
-    link.addEventListener("click", () => {
-        nav.classList.remove("active");
-    });
-});
-
 // ********************************** Javascript to disabled the first otpion of the client select
 // ********************************** and disabled the motor select when necessary
 // Check if the element exists
 if ($('#id_client').length > 0) {
     // Element exists
     $(document).ready(function() {
-        var selectClientElement = document.getElementById('id_client');
-        var firstClientOption = selectClientElement.options[0];
-        var testClient = document.getElementById('id_client').value;
+        var selectClientElement = $('#id_client');
+        var firstClientOption = selectClientElement.find('option:first');
+        var testClient = selectClientElement.val();
         if (testClient == '') {
-            var selectMotorElement = document.getElementById('id_motor_serial_number');
-            selectMotorElement.disabled = true;
+            $('#id_motor_serial_number').prop('disabled', true);
         }
-        firstClientOption.hidden = true;
-    });
-};
-
-// ********************************** Update the report page title
-if ($('#report_title').length > 0) {
-    $(document).ready(function() {
-
-        $('#report_title').html('Nouveau rapport');
+        firstClientOption.hide();
     });
 };
 
