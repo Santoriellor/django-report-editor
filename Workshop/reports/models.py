@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator
 from django.db import models
 
 # By default, Django automatically adds an integer primary key field to each model, called id
@@ -11,8 +12,20 @@ default_char = ''
 class Client(models.Model):
     last_name = models.CharField(max_length=50, default=default_char)
     first_name = models.CharField(max_length=50, default=default_char)
-    phone_number1 = models.CharField(max_length=20, default=default_char)
-    phone_number2 = models.CharField(max_length=20, default=default_char, blank=True)
+    phone_number1 = models.CharField(max_length=20, validators=[
+        RegexValidator(
+            regex=r"^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$",
+            message='Enter a valid phone number.'
+        )
+    ])
+    phone_number2 = models.CharField(
+        max_length=20,
+        validators=[RegexValidator(
+            regex=r'^\+?1?\d{9,15}$',
+            message='Enter a valid phone number.'
+        )],
+        blank=True
+    )
     address = models.CharField(max_length=100, default=default_char, blank=True)
     email = models.CharField(max_length=100, default=default_char, blank=True)
     client_info = models.CharField(max_length=255, default=default_char, blank=True)

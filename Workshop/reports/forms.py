@@ -1,5 +1,6 @@
 from datetime import date
 from django import forms
+from django.core.validators import RegexValidator
 from django.forms import BoundField
 from django.utils.translation import gettext_lazy as _
 from .models import Report, Client, MotorOwner, MotorModel, Item, ReportItem
@@ -104,10 +105,28 @@ class ClientForm(forms.ModelForm):
             "email": _("Adresse email"),
         }
         widgets = {
-            "client_info": forms.Textarea(attrs={"rows": 4, "style": "width: 100%; resize: none; padding: 5px;"}),
+            "last_name": forms.TextInput(attrs={"style": "width: calc(5rem + 5vw); font-size: calc(0.2rem + 1vw);"}),
+            "first_name": forms.TextInput(attrs={"style": "width: calc(5rem + 5vw); font-size: calc(0.2rem + 1vw);"}),
+            "phone_number1": forms.TextInput(attrs={"style": "width: calc(3rem + 5vw); font-size: calc(0.2rem + 1vw);"}),
+            "phone_number2": forms.TextInput(attrs={"style": "width: calc(3rem + 5vw); font-size: calc(0.2rem + 1vw);"}),
+            "email": forms.EmailInput(attrs={"style": "width: calc(5rem + 5vw); font-size: calc(0.2rem + 1vw);"}),
+            "client_info": forms.Textarea(attrs={
+                "rows": 4,
+                "style": "width: 100%; resize: none; padding: 5px; font-size: calc(0.2rem + 1vw);"
+            }),
+            "address": forms.Textarea(attrs={
+                "rows": 2,
+                "style": "width: 90%; resize: none; padding: 5px; font-size: calc(0.2rem + 1vw);"
+            }),
         }
+        # validators = {
+        #     "phone_number1": [RegexValidator(
+        #         regex=r"",
+        #         message='Enter a valid telephone number',
+        #         code='invalid_format'
+        #     )]
+        # }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['client_info'] = forms.CharField(widget=forms.Textarea, required=False)

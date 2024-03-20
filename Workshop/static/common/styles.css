@@ -11,6 +11,7 @@
 
 body {
     overflow-y: scroll; /* Always show vertical scrollbar */
+    background: ghostwhite;
 }
  main {
     font-size: calc(0.3rem + 1vw);
@@ -240,6 +241,18 @@ body {
     color: grey;
 }
 
+/* **************************** Client *************************** */
+.client {
+    max-width: 90%; /* Adjust as needed */
+    margin: 0 auto;   /* Center the container horizontally */
+    padding: 0 0 20px 0;
+    text-align: center; /* Center the text content horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the flex items horizontally */
+    align-items: center; /* Center the flex items vertically */
+}
+
 /* **************************** Report *************************** */
 .report {
     max-width: 90%; /* Adjust as needed */
@@ -253,6 +266,7 @@ body {
 }
 .report > h2 {
     padding: 5px;
+    text-shadow: 2px 2px 5px grey;
 }
 .report > form {
     width:100%;
@@ -297,6 +311,7 @@ body {
 }
 .listing > h2 {
     padding: 5px;
+    text-shadow: 2px 2px 5px grey;
 }
 
 .listing > .row {

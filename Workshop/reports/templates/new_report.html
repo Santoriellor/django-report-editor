@@ -12,15 +12,15 @@
     <form method="post">
         {% csrf_token %}
         <div class="row">
-            <p><label for="id_date_report">{{ form.date_report.label }}</label>
+            <p><label for="id_date_report">{{ form.date_report.label|capitalize_first }}</label>
                     {{ form.date_report }}</p>
 <!--            <label for="id_client">{{ form.client.label }}</label>-->
             <p>        {{ form.client }}</p>
-            <p><label for="id_motor_serial_number">{{ form.motor_serial_number.label }}</label>
+            <p><label for="id_motor_serial_number">{{ form.motor_serial_number.label|capitalize_first }}</label>
                     {{ form.motor_serial_number }}</p>
         </div>
         <div class="row">
-            <label for="id_info">{{ form.info.label }}</label>
+            <label for="id_info">{{ form.info.label|capitalize_first }}</label>
                     {{ form.info }}
         </div>
         <div class="row">

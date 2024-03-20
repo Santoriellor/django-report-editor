@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-rat=v@j-i*4^_i#c(eaa@@i=)$0lsf*x=2*(#-$lqx($#k-^8$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# '*' MEANS EVERY OUTSIDE COMPUTER HAVE ACCESS
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

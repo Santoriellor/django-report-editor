@@ -1,27 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="report">
     <h2>Nouveau client</h2>
     <form method="post">
         {% csrf_token %}
-        <div class="field-group">
-            <p><label for="id_last_name">{{ form.last_name.label }}</label>
+        <div class="row">
+            <p>
+                <label for="id_last_name">{{ form.last_name.label|capitalize_first }}</label>
                     {{ form.last_name }}
-            <label for="id_first_name">{{ form.first_name.label }}</label>
+                <label for="id_first_name">{{ form.first_name.label|capitalize_first }}</label>
                     {{ form.first_name }}
-            </p><p><label for="id_client_info">{{ form.client_info.label }}</label>
-                    {{ form.client_info }}
             </p>
-            <label for="id_address">{{ form.address.label }}</label>
-                    {{ form.address }}
-            <label for="id_phone_number1">{{ form.phone_number1.label }}</label>
-                    {{ form.phone_number1 }}
-            <label for="id_phone_number2">{{ form.phone_number2.label }}</label>
-                    {{ form.phone_number2 }}
-            <label for="id_email">{{ form.email.label }}</label>
-                    {{ form.email }}
         </div>
+        <div class="row">
+                <label for="id_client_info">{{ form.client_info.label|capitalize_first }}</label>
+                    {{ form.client_info }}
+        </div>
+        <div class="row">
+            <p><label for="id_phone_number1">{{ form.phone_number1.label|capitalize_first }}</label>
+                    {{ form.phone_number1 }}</p>
+            <p><label for="id_phone_number2">{{ form.phone_number2.label|capitalize_first }}</label>
+                    {{ form.phone_number2 }}</p>
+            <p><label for="id_email">{{ form.email.label|capitalize_first }}</label>
+                    {{ form.email }}</p>
+        </div>
+        <div class="row">
+            <label for="id_address">{{ form.address.label|capitalize_first }}</label>
+                    {{ form.address }}
+
+        </div>
+        test{% for error in form.phone_number.errors %}
+        <span class="error">{{ error }}</span>
+        {% endfor %}test
         <button type="submit">Enregistrer</button>
     </form>
 </div>
