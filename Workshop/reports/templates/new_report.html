@@ -23,20 +23,23 @@
                     {{ form.info }}
         </div>
         <div class="row">
-        {% total_count initial=1 %}
+        {% total_count initial=-1 %}
         {% for field in form %}
             {% if field.name|slice:":9" == "item_task" %}
-                {% if total_count == 5 %}
-                    </div><div class="row" id="test">
+                {% total_count as counter %}
+                {% if counter|divisibleby:5 %}
+                    </div><div class="row">
                 {% endif %}
-                <p><label>{{ field.label|capitalize_first }}</label> {{ field }}</p>
+                <p><label>{{ field.label|capitalize_first }}</label> {{ field }} </p>
             {% endif %}
         {% endfor %}
         </div>
         <div class="row">
+        {% total_count initial=-1 %}
         {% for field in form %}
             {% if field.name|slice:":13" == "item_material" %}
-                {% if total_count %}
+                {% total_count as counter %}
+                {% if counter|divisibleby:5 %}
                     </div><div class="row">
                 {% endif %}
                 <p><label>{{ field.label|capitalize_first }}</label> {{ field }} </p>

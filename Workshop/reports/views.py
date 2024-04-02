@@ -1,5 +1,6 @@
 import functools
 import itertools
+import os
 
 from django.db import connection
 from django.db.utils import IntegrityError
@@ -173,7 +174,7 @@ def list_reports(request):
                 url_delete = reverse('delete_report', kwargs={'report_id': report.id})
                 url_export = reverse('export_report', kwargs={'report_id': report.id})
                 row_str = "<div class='row'>"
-                row_str += f"<div class='item'>{text_report}</div>"  # <a href='{url_read}'></a>
+                row_str += f"<div class='item1'>{text_report}</div>"  # <a href='{url_read}'></a>
                 row_str += f"<div class='buttons'><a href='{url_read}'>Consulter</a>"
                 row_str += f"<a href='{url_update}'>Modifier</a>"
                 row_str += f"<a href='{url_delete}'>Supprimer</a>"
@@ -201,7 +202,7 @@ def list_exported(request):
                 url_read = reverse('read_report', kwargs={'report_id': report.id})
                 url_export_pdf = reverse('export_report_pdf', kwargs={'report_id': report.id})
                 row_str = "<div class='row'>"
-                row_str += f"<div class='item'>{text_report}</div>"
+                row_str += f"<div class='item1'>{text_report}</div>"
                 row_str += f"<div class='buttons'><a href='{url_read}'>Consulter</a>"
                 row_str += f"<a href='{url_export_pdf}'>Facture</a></div>"
                 row_str += "</div>"
@@ -209,6 +210,21 @@ def list_exported(request):
     # Pass the report_links list as a context variable
     context = {'report_links': report_links}
     return render(request, 'list_exported.html', context)
+
+
+def list_invoice(request):
+    # Specify the directory path
+    directory = './json/'
+    # Get the list of files in the directory
+    files = os.listdir(directory)
+    invoice_links = []
+    for file in files:
+        row_str = "<div class='row'>"
+        row_str += f"<div class='item1'><a href='{file}'>{file}</a></div>"
+        row_str += "</div>"
+        invoice_links.append(row_str)
+    # Pass the list of files to the template context
+    return render(request, 'list_invoice.html', {'invoice_links': invoice_links})
 
 
 def export_report_pdf(request, report_id):

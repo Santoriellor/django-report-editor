@@ -1,0 +1,6 @@
+- [ ] export to PDF
+- [ ] multi-language
+- [ ] about section
+- [ ] home section
+- [ ] how to define CONST
+- [ ] why is .report CSS not taken into account

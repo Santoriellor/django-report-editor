@@ -10,7 +10,7 @@ def capitalize_first(value):
     return value
 
 
-@register.simple_tag(name='total_count')
+@register.simple_tag
 def total_count(initial=None, _count=[0]):  # noqa
     if initial is not None:
         # reset counter and make sure nothing is printed

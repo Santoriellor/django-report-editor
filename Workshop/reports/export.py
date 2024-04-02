@@ -4,7 +4,7 @@ import os
 from django.shortcuts import get_object_or_404
 from .models import Report, Client, ReportItem, Item
 
-EXPORT_FOLDER = 'exports'
+EXPORT_FOLDER = 'invoices'
 JSON_FOLDER = 'json'
 
 

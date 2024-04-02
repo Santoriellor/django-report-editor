@@ -28,6 +28,10 @@ DEBUG = True
 # '*' MEANS EVERY OUTSIDE COMPUTER HAVE ACCESS
 ALLOWED_HOSTS = ['*']
 
+GLOBAL_SETTINGS = {
+    'EXPORT_FOLDER': 'invoices',
+    'JSON_FOLDER': 'json',
+}
 
 # Application definition
 
