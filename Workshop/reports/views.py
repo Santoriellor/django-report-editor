@@ -1,5 +1,3 @@
-import functools
-import itertools
 import os
 
 from django.db import connection
