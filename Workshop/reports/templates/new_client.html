@@ -30,9 +30,9 @@
                     {{ form.address }}
 
         </div>
-        test{% for error in form.phone_number.errors %}
+        {% for error in form.phone_number.errors %}
         <span class="error">{{ error }}</span>
-        {% endfor %}test
+        {% endfor %}
         <button type="submit">Enregistrer</button>
     </form>
 </div>

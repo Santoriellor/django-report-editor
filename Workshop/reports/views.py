@@ -1,15 +1,17 @@
+import functools
+import itertools
+
 from django.db import connection
 from django.db.utils import IntegrityError
 from django.http import JsonResponse
 from django.urls import reverse
 from django.shortcuts import redirect, render, get_object_or_404
 
-# from .fill_table import fill_item
+from .export import export_data
 from .forms import ReportForm, ClientForm
-# from .invoice_calculator import invoice_calculator
 from .models import Report, Client, MotorOwner, MotorModel, ReportItem, Item
 
-# for testing purpose
+# for testing purpose WINDOWS ONLY
 import win32api
 # testsequence
 def show_alert(title, message):
@@ -20,8 +22,6 @@ def show_alert(title, message):
 
 
 # Create your views here.
-
-
 def fill_table(request):
     # fill_item()
     return redirect('list_reports')
@@ -56,7 +56,12 @@ def new_report(request):
             return redirect('list_reports')
     else:
         form = ReportForm()
-    return render(request, 'new_report.html', {'form': form})
+    return render(
+        request,
+        'new_report.html',
+        {
+            'form': form,
+        })
 
 
 def update_report(request, report_id):
@@ -99,6 +104,7 @@ def update_report(request, report_id):
                             ).first()
 
                             show_alert("Alert", f"test update {qty_instance}")
+
                             if report_item_instance:
                                 # Update the existing instance's attributes as needed
                                 report_item_instance.report_quantity = qty_instance
@@ -110,7 +116,12 @@ def update_report(request, report_id):
     else:
         form = ReportForm(instance=report)
 
-    return render(request, 'new_report.html', {'form': form})
+    return render(
+        request,
+        'new_report.html',
+        {
+            'form': form,
+        })
 
 
 def delete_report(request, report_id):
@@ -132,7 +143,15 @@ def export_report(request, report_id):
 def read_report(request, report_id):
     report = get_object_or_404(Report, pk=report_id)
     client = get_object_or_404(Client, pk=report.client_id)
-    return render(request, 'read_report.html', {'report': report, 'client': client})
+    # Filter items where the name starts with "task"
+    task_items = Item.objects.filter(ref__startswith='task')
+    # Filter items where the name starts with "material"
+    material_items = Item.objects.filter(ref__startswith='material')
+    # Filter report items corresponding to the task items
+    tasks = ReportItem.objects.filter(report=report_id, item__in=task_items)
+    # Filter report items corresponding to the material items
+    materials = ReportItem.objects.filter(report=report_id, item__in=material_items)
+    return render(request, 'read_report.html', {'report': report, 'client': client, 'tasks': tasks, 'materials': materials})
 
 
 def list_reports(request):
@@ -155,7 +174,8 @@ def list_reports(request):
                 url_export = reverse('export_report', kwargs={'report_id': report.id})
                 row_str = "<div class='row'>"
                 row_str += f"<div class='item'>{text_report}</div>"  # <a href='{url_read}'></a>
-                row_str += f"<div class='buttons'><a href='{url_update}'>Modifier</a>"
+                row_str += f"<div class='buttons'><a href='{url_read}'>Consulter</a>"
+                row_str += f"<a href='{url_update}'>Modifier</a>"
                 row_str += f"<a href='{url_delete}'>Supprimer</a>"
                 row_str += f"<a href='{url_export}'>Exporter</a></div>"
                 row_str += "</div>"
@@ -178,11 +198,12 @@ def list_exported(request):
                 client = get_object_or_404(Client, pk=client_id)
                 text_report = report.date_report.strftime('%m/%d/%Y') + " - Rapport n°" + str(
                     report.id) + " - " + client.last_name.capitalize()
+                url_read = reverse('read_report', kwargs={'report_id': report.id})
                 url_export_pdf = reverse('export_report_pdf', kwargs={'report_id': report.id})
                 row_str = "<div class='row'>"
                 row_str += f"<div class='item'>{text_report}</div>"
-                row_str += f"<div class='buttons'><a href='#'>Consulter</a></div>"
-                row_str += f"<div class='buttons'><a href='{url_export_pdf}'>Export PDF</a></div>"
+                row_str += f"<div class='buttons'><a href='{url_read}'>Consulter</a>"
+                row_str += f"<a href='{url_export_pdf}'>Facture</a></div>"
                 row_str += "</div>"
                 report_links.append(row_str)
     # Pass the report_links list as a context variable
@@ -191,7 +212,7 @@ def list_exported(request):
 
 
 def export_report_pdf(request, report_id):
-    # invoice_calculator(report_id)
+    export_data(report_id)
     return redirect('list_exported')
 
 
@@ -227,12 +248,17 @@ def list_client(request):
         for row in rows:
             client_id = row[0]
             client = get_object_or_404(Client, pk=client_id)
-            text_client = client.last_name.capitalize() + " " + client.first_name.capitalize()
-            text_client += " - tél. " + client.phone_number1
+            name_client = client.last_name.capitalize() + " " + client.first_name.capitalize()
+            phone_client1 = "Tél. " + client.phone_number1
+            phone_client2 = "Tél. " + client.phone_number2
+            addr_client = "Adr: " + client.address
             url_new = reverse('new_client') + f"?infos_client={client_id}"
             url_update = reverse('update_client', kwargs={'client_id': client.id})
             row_str = "<div class='row'>"
-            row_str += f"<div class='item'>{text_client}</div>"  # <a href='{url_new}'></a>
+            row_str += f"<div class='item1'>{name_client}</div>"  # <a href='{url_new}'></a>
+            row_str += f"<div class='item2'>{phone_client1}</div>"
+            row_str += f"<div class='item2'>{phone_client2}</div>"
+            row_str += f"<div class='item2'>{addr_client}</div>"
             row_str += f"<div class='buttons'><a href='{url_update}'>Modifier</a></div>"
             row_str += "</div>"
             client_links.append(row_str)

@@ -1,12 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-    <h2>Numéro du rapport : {{ report.id }}</h2>
-    <p>Identifiant client : {{ report.client_id }}</p>
-    <p>Nom client : {{ client.last_name|title }}</p>
-    <p>Informations client : {{ report.info|capitalize_first }}</p>
-    <p>N° série moteur : {{ report.motor_serial_number }}</p>
-    <input type="button" value="Exporter">
+<div class="report">
+    <h2 id="report_title">
+        <p>Rapport n° {{ report.id }}</p>
+    </h2>
+    <form>
+        <div class="row">
+            <p><label for="id_date_report">Date : </label>
+                    {{ report.date_report }}</p>
+            <p><label for="id_client">Nom du client : </label>
+                    {{ report.client }}</p>
+            <p><label for="id_motor_serial_number">N° moteur : </label>
+                    {{ report.motor_serial_number }}</p>
+        </div>
+        <div class="row">
+            <label for="id_info">Informations client : </label>
+                    {{ report.info }}
+        </div>
+        {% if tasks %}
+        <div class="row">
+        {% for task in tasks %}
+                {% if forloop.counter0|divisibleby:5 and not forloop.first %}
+                </div><div class="row">
+                {% endif %}
+                <p>
+                    <label>{{ task.item.label|capitalize_first }}</label>
+                    <input type="checkbox" checked disabled>
+                </p>
+        {% endfor %}
+        </div>
+        {% endif %}
+        {% if materials %}
+        <div class="row">
+        {% for material in materials %}
+                {% if forloop.counter0|divisibleby:5 and not forloop.first %}
+                </div><div class="row">
+                {% endif %}
+                <p>
+                    <label>{{ material.item.label|capitalize_first }} : </label>
+                    {{ material.report_quantity }}
+                </p>
+        {% endfor %}
+        </div>
+        {% endif %}
+        </form>
 </div>
 {% endblock %}

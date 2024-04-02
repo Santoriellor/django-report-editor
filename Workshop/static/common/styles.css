@@ -12,6 +12,8 @@
 body {
     overflow-y: scroll; /* Always show vertical scrollbar */
     background: ghostwhite;
+    min-width: 365px;
+    min-height: 310px;
 }
  main {
     font-size: calc(0.3rem + 1vw);
@@ -215,43 +217,8 @@ body {
     }
 }
 
-/* ******************** FORMS ************************ */
-
-.container {
-    max-width: 90%; /* Adjust as needed */
-    margin: 0 auto;   /* Center the container horizontally */
-    padding: 0 0 20px 0;
-    text-align: center; /* Center the text content horizontally */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center the flex items horizontally */
-    align-items: center; /* Center the flex items vertically */
-}
-
-.container h2 {
-    padding: 5px 10px 10px 10px;
-}
-
-.container p {
-    align-self: flex-start;
-    padding: 4px 10px;
-}
-
-.container a:hover {
-    color: grey;
-}
-
 /* **************************** Client *************************** */
-.client {
-    max-width: 90%; /* Adjust as needed */
-    margin: 0 auto;   /* Center the container horizontally */
-    padding: 0 0 20px 0;
-    text-align: center; /* Center the text content horizontally */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center the flex items horizontally */
-    align-items: center; /* Center the flex items vertically */
-}
+/* use report
 
 /* **************************** Report *************************** */
 .report {
@@ -274,10 +241,13 @@ body {
 .report > form > .row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: top;
     border-bottom: 1px solid #ccc;
     padding: 10px;
     width: 100%;
+}
+#p-motor {
+    text-align: right;
 }
 .report > form > button {
     text-decoration: none;
@@ -313,7 +283,6 @@ body {
     padding: 5px;
     text-shadow: 2px 2px 5px grey;
 }
-
 .listing > .row {
     display: flex;
     justify-content: space-between;
@@ -322,17 +291,19 @@ body {
     padding: 10px;
     width: 100%;
 }
-
-.item {
+.listing > .row > .item1 {
     flex: 1;
     text-align: left;
 }
-
+.listing > .row > .item2 {
+    flex: 1;
+    text-align: left;
+    font-size: calc(0.1rem + 1vw);
+}
 .listing > .row > .buttons {
     display: flex;
     justify-content: space-between;
 }
-
 .listing > .row > .buttons > a {
     text-decoration: none;
     background-color: darkgrey;
@@ -346,19 +317,9 @@ body {
     box-shadow: 2px 2px 5px 2px lightgrey;
     transition: transform 0.1s ease;
 }
+.listing > .row > .buttons > a:hover {
+    background-color: lightgrey;
+    transition: 0.3s;
+    transform: translateY(2px) translateX(1px);
+}
 
-.listing > .row > .buttons > a:nth-child(1):hover {
-    background-color: lightgrey;
-    transition: 0.3s;
-    transform: translateY(2px) translateX(1px);
-}
-.listing > .row > .buttons > a:nth-child(2):hover {
-    background-color: darksalmon;
-    transition: 0.3s;
-    transform: translateY(2px) translateX(1px);
-}
-.listing > .row > .buttons > a:nth-child(3):hover {
-    background-color: lightgrey;
-    transition: 0.3s;
-    transform: translateY(2px) translateX(1px);
-}

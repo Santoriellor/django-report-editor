@@ -107,3 +107,37 @@ def fill_item():
 # material_boat_winter_storage
 # material_motor_winter_storage
 # material_work_hour
+
+# Fetch the invoice object
+    report = get_object_or_404(Report, pk=report_id)
+
+    # Create a response object
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="invoice_{report_id}.pdf"'
+
+    # Create a PDF document
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    elements = []
+
+    # Define the data for the invoice
+    data = [
+        ['Invoice Number:', report.id],
+        ['Date:', str(report.date_report)],
+        # Add more invoice data here
+    ]
+
+    # Create a table and add data to it
+    table = Table(data)
+    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                               ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                               ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                               ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                               ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                               ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                               ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
+
+    # Add the table to the document
+    elements.append(table)
+
+    # Build the PDF document
+    doc.build(elements)

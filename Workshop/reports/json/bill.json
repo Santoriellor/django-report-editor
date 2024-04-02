@@ -1,0 +1,27 @@
+{
+  "invoice_number": "INV-001",
+  "date": "2024-03-25",
+  "customer": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "address": "123 Main St, Anytown, USA"
+  },
+  "items": [
+    {
+      "description": "Product A",
+      "quantity": 2,
+      "unit_price": 10.00,
+      "total": 20.00
+    },
+    {
+      "description": "Product B",
+      "quantity": 1,
+      "unit_price": 15.00,
+      "total": 15.00
+    }
+  ],
+  "subtotal": 35.00,
+  "tax_rate": 0.10,
+  "tax_amount": 3.50,
+  "total": 38.50
+}
