@@ -103,9 +103,6 @@ def update_report(request, report_id):
                                 report=report_instance,
                                 item=item_instance
                             ).first()
-
-                            show_alert("Alert", f"test update {qty_instance}")
-
                             if report_item_instance:
                                 # Update the existing instance's attributes as needed
                                 report_item_instance.report_quantity = qty_instance
@@ -189,7 +186,7 @@ def list_reports(request):
 def list_exported(request):
     # Run a raw SQL query
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM reports_report WHERE exported = 1")
+        cursor.execute("SELECT * FROM reports_report WHERE exported = 1 AND invoiced = 0")
         rows = cursor.fetchall()
         report_links = []
         for row in rows:
@@ -229,6 +226,9 @@ def list_invoice(request):
 
 def export_report_pdf(request, report_id):
     export_data(report_id)
+    report = Report.objects.get(pk=report_id)
+    report.invoiced = True
+    report.save()
     return redirect('list_exported')
 
 

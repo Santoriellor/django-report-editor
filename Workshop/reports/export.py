@@ -51,7 +51,7 @@ def export_data(report_id):
         data["items"].append(item_data)
 
     # Call function to create JSON file
-    create_json(data, report_id, report.date_report)
+    create_json(data, fullname, report_id, report.date_report)
 
 
 def ensure_export_folder_exists():
@@ -64,10 +64,10 @@ def ensure_json_folder_exists():
         os.makedirs(JSON_FOLDER)
 
 
-def create_json(data, report_id, date):
+def create_json(data, fullname, report_id, date):
     ensure_json_folder_exists()
     # Write data to JSON file
-    with open(f'{JSON_FOLDER}/{date}_report_{report_id}.json', 'w') as json_file:
+    with open(f'{JSON_FOLDER}/{date}_{fullname}_report_{report_id}.json', 'w') as json_file:
         json.dump(data, json_file, indent=4)
         return True
 
