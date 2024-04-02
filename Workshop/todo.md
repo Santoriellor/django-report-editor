@@ -4,3 +4,4 @@
 - [ ] home section
 - [ ] how to define CONST
 - [ ] why is .report CSS not taken into account
+- [ ] how to hide settings key
