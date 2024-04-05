@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rat=v@j-i*4^_i#c(eaa@@i=)$0lsf*x=2*(#-$lqx($#k-^8$'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,8 +90,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'workshop',
-        'USER': 'root',
-        'PASSWORD': 'mysql',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'localhost',  # Or the IP address of your MySQL server
         'PORT': '3306',       # MySQL default port
     }
