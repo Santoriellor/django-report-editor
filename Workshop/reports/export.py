@@ -1,11 +1,13 @@
 import json
 import os
+from pathlib import Path
 
 from django.shortcuts import get_object_or_404
 from .models import Report, Client, ReportItem, Item
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 EXPORT_FOLDER = 'invoices'
-JSON_FOLDER = 'json'
+JSON_FOLDER = os.path.join(BASE_DIR, "json/")
 
 
 def export_data(report_id):

@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from django.db import connection
 from django.db.utils import IntegrityError
@@ -10,14 +11,9 @@ from .export import export_data
 from .forms import ReportForm, ClientForm
 from .models import Report, Client, MotorOwner, MotorModel, ReportItem, Item
 
-# for testing purpose WINDOWS ONLY
-import win32api
-# testsequence
-def show_alert(title, message):
-    win32api.MessageBox(0, message, title, 0x00001000)
-#
-# show_alert("Alert", f"no save")
-# endtestsequence
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Create your views here.
@@ -209,7 +205,7 @@ def list_exported(request):
 
 def list_invoice(request):
     # Specify the directory path
-    directory = './json/'
+    directory = os.path.join(BASE_DIR, "json/")
     # Get the list of files in the directory
     files = os.listdir(directory)
     invoice_links = []
