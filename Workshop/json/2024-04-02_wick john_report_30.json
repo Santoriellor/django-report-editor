@@ -1,0 +1,57 @@
+{
+    "invoice_number": 30,
+    "date": "2024-04-02",
+    "customer": {
+        "name": "wick john",
+        "email": "remy25071980@gmail.com",
+        "address": ""
+    },
+    "items": [
+        {
+            "description": "Filtre carburant",
+            "reference": "material_fuelfilter",
+            "quantity": 1.0,
+            "unit_price": 12.5,
+            "total": 12.5
+        },
+        {
+            "description": "huile moteur (l)",
+            "reference": "material_oil",
+            "quantity": 3.3,
+            "unit_price": 12.5,
+            "total": 41.25
+        },
+        {
+            "description": "joint O-ring",
+            "reference": "material_oring",
+            "quantity": 2.0,
+            "unit_price": 8.7,
+            "total": 17.4
+        },
+        {
+            "description": "Temps de travail (h)",
+            "reference": "material_work_hour",
+            "quantity": 4.5,
+            "unit_price": 85.5,
+            "total": 384.75
+        },
+        {
+            "description": "permis bateau",
+            "reference": "task_accessory_boatlicense",
+            "quantity": 1.0,
+            "unit_price": 15.0,
+            "total": 15.0
+        },
+        {
+            "description": "tuyau r\u00e9servoir",
+            "reference": "task_accessory_fuelhose",
+            "quantity": 1.0,
+            "unit_price": 15.0,
+            "total": 15.0
+        }
+    ],
+    "subtotal": 485.9,
+    "tax_rate": 0.1,
+    "tax_amount": 48.59,
+    "total": 534.49
+}

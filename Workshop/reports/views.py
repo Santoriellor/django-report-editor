@@ -253,7 +253,7 @@ def update_client(request, client_id):
         form = ClientForm(request.POST, instance=client)
         if form.is_valid():
             form.save()  # Update the existing instance
-            return redirect('list_client')  # Redirect to 'list_reports'
+            return redirect('list_client')  # Redirect to 'list_clients'
     else:
         form = ClientForm(instance=client)
     return render(request, 'reports/new_client.html', {'form': form})

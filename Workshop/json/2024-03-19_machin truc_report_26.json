@@ -1,0 +1,36 @@
+{
+    "invoice_number": 26,
+    "date": "2024-03-19",
+    "customer": {
+        "name": "machin truc",
+        "email": "machin@truc.bidule",
+        "address": "adrttzuzu asdrttu"
+    },
+    "items": [
+        {
+            "description": "huile moteur (l)",
+            "reference": "material_oil",
+            "quantity": 3.2,
+            "unit_price": 12.5,
+            "total": 40.0
+        },
+        {
+            "description": "permis bateau",
+            "reference": "task_accessory_boatlicense",
+            "quantity": 1.0,
+            "unit_price": 15.0,
+            "total": 15.0
+        },
+        {
+            "description": "moteur",
+            "reference": "task_accessory_motor",
+            "quantity": 1.0,
+            "unit_price": 15.0,
+            "total": 15.0
+        }
+    ],
+    "subtotal": 70.0,
+    "tax_rate": 0.1,
+    "tax_amount": 7.0,
+    "total": 77.0
+}

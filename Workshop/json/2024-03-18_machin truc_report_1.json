@@ -1,0 +1,14 @@
+{
+    "invoice_number": 1,
+    "date": "2024-03-18",
+    "customer": {
+        "name": "machin truc",
+        "email": "machin@truc.bidule",
+        "address": "adrttzuzu asdrttu"
+    },
+    "items": [],
+    "subtotal": 0.0,
+    "tax_rate": 0.1,
+    "tax_amount": 0.0,
+    "total": 0.0
+}

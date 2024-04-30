@@ -1,0 +1,36 @@
+{
+    "invoice_number": 34,
+    "date": "2024-04-28",
+    "customer": {
+        "name": "bombadil tom",
+        "email": "tom.bombadil@lordofthering.com",
+        "address": "4 impasse des airelles"
+    },
+    "items": [
+        {
+            "description": "Temps de travail (h)",
+            "reference": "material_work_hour",
+            "quantity": 10.0,
+            "unit_price": 85.5,
+            "total": 855.0
+        },
+        {
+            "description": "tuyau r\u00e9servoir",
+            "reference": "task_accessory_fuelhose",
+            "quantity": 1.0,
+            "unit_price": 15.0,
+            "total": 15.0
+        },
+        {
+            "description": "Filtre \u00e0 carburant",
+            "reference": "task_fuelfilter_replace",
+            "quantity": 1.0,
+            "unit_price": 9.2,
+            "total": 9.2
+        }
+    ],
+    "subtotal": 879.2,
+    "tax_rate": 0.1,
+    "tax_amount": 87.92000000000002,
+    "total": 967.1200000000001
+}
