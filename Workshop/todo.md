@@ -4,3 +4,6 @@
 - [ ] home section
 - [ ] how to define CONST
 - [ ] how to hide settings key
+- [X] add a confirm to any delete button
+- [X] add login
+- [ ] small screen menu

@@ -17,7 +17,8 @@ class ReportForm(forms.ModelForm):
     # When you change the empty_label parameter, you must update the script to render the motr select disabled
     client = forms.ModelChoiceField(
         queryset=clients,
-        empty_label=_("Choisir un client")
+        empty_label=_("Choisir un client"),
+        label=_("Nom du client"),
     )
 
     class Meta:
@@ -27,14 +28,14 @@ class ReportForm(forms.ModelForm):
         exclude = ['exported']
         labels = {
             "date_report": _("Date de création"),
-            "motor_serial_number": _("N° de série du moteur"),
+            "motor_serial_number": _("N° de série moteur"),
             "info": _("Informations diverses"),
         }
         widgets = {
-            "date_report": forms.DateInput(attrs={"style": "width: calc(3rem + 5vw); font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"}),
+            "date_report": forms.DateInput(attrs={"style": "width: 140px; padding: 2px; border-radius: 5px; border: solid 1px #dee2e6; text-align: center;"}),
             "info": forms.Textarea(attrs={
                 "rows": 4,
-                "style": "width: 100%; resize: none; padding: 5px; font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"
+                "style": "width: 100%; resize: none; padding: 5px; border-radius: 5px; border: solid 1px var(--border-color1);"
             }),
         }
 
@@ -47,8 +48,8 @@ class ReportForm(forms.ModelForm):
         # Disabled the date_report field
         self.fields['date_report'].disabled = True
 
-        self.fields['client'].widget.attrs["style"] = "width:  calc(8rem + 5vw); font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"
-        self.fields['motor_serial_number'].widget.attrs["style"] = "width:  calc(8rem + 4vw); font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"
+        self.fields['client'].widget.attrs["style"] = "width:  140px; padding: 2px; border-radius: 5px; border: solid 1px var(--border-color1);"
+        self.fields['motor_serial_number'].widget.attrs["style"] = "width:  140px; padding: 2px; border-radius: 5px; border: solid 1px var(--border-color1);"
 
         # Query all items from the Item model
         items = Item.objects.all()
@@ -63,14 +64,14 @@ class ReportForm(forms.ModelForm):
                     label=item.label,
                     required=False,  # Make the field optional
                     widget=forms.CheckboxInput(attrs={
-                        'style': 'vertical-align: middle; margin: 0; padding: 0; cursor: pointer; border: solid 1px darkgrey;'}),
+                        'style': 'vertical-align: middle; margin: 0; padding: 0; cursor: pointer; outline: none; border: 1px solid var(--border-color1);'}),
                 )
             # if the item is a material, add a decimal field to the form (quantity)
             elif field_name.startswith('item_material'):
                 self.fields[f"{field_name}_qty"] = forms.DecimalField(
                     label=item.label,
                     required=False,
-                    widget=forms.NumberInput(attrs={'style': 'width: calc(1.9rem + 2vw); font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;'}),
+                    widget=forms.NumberInput(attrs={'style': 'width: calc(1.9rem + 2vw); var(--font-size); border-radius: 5px; border: solid 1px var(--border-color1);'}),
                 )
 
         # Populate initial data for item fields if instance exists
@@ -107,18 +108,18 @@ class ClientForm(forms.ModelForm):
             "email": _("Adresse email"),
         }
         widgets = {
-            "last_name": forms.TextInput(attrs={"style": "width: calc(5rem + 5vw); font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"}),
-            "first_name": forms.TextInput(attrs={"style": "width: calc(5rem + 5vw); font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"}),
-            "phone_number1": forms.TextInput(attrs={"style": "width: calc(3rem + 5vw); font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"}),
-            "phone_number2": forms.TextInput(attrs={"style": "width: calc(3rem + 5vw); font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"}),
-            "email": forms.EmailInput(attrs={"style": "width: calc(5rem + 5vw); font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"}),
+            "last_name": forms.TextInput(attrs={"style": "width: 150px; padding: 2px; var(--font-size); border-radius: 5px; border: solid 1px var(--border-color1);"}),
+            "first_name": forms.TextInput(attrs={"style": "width: 150px; padding: 2px; var(--font-size); border-radius: 5px; border: solid 1px var(--border-color1);"}),
+            "phone_number1": forms.TextInput(attrs={"style": "width: 150px; padding: 2px; var(--font-size); border-radius: 5px; border: solid 1px var(--border-color1);"}),
+            "phone_number2": forms.TextInput(attrs={"style": "width: 150px; padding: 2px; var(--font-size); border-radius: 5px; border: solid 1px var(--border-color1);"}),
+            "email": forms.EmailInput(attrs={"style": "width: 150px; padding: 2px; var(--font-size); border-radius: 5px; border: solid 1px var(--border-color1);"}),
             "client_info": forms.Textarea(attrs={
                 "rows": 4,
-                "style": "width: 100%; resize: none; padding: 5px; font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"
+                "style": "width: 100%; resize: none; padding: 5px; var(--font-size); border-radius: 5px; border: solid 1px var(--border-color1);"
             }),
             "address": forms.Textarea(attrs={
                 "rows": 2,
-                "style": "width: 90%; resize: none; padding: 5px; font-size: calc(0.2rem + 1vw); border-radius: 5px; border: solid 1px darkgrey;"
+                "style": "width: 100%; resize: none; padding: 5px; var(--font-size); border-radius: 5px; border: solid 1px var(--border-color1);"
             }),
         }
         # validators = {

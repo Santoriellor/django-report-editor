@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="listing">
+<div class="list-client">
     <h2>Clients</h2>
+    <div class="card-container">
     {% for client_link in client_links %}
         <p>{{ client_link|safe }}</p>
     {% endfor %}
+    </div>
 </div>
 {% endblock %}

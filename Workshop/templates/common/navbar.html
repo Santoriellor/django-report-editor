@@ -1,7 +1,11 @@
 <header id="nav_header">
 <nav class="menu">
+    <div class="dropdown-icon">&#9776;</div>
     <ol>
-      <li class="menu-item"><a href="#0">Accueil</a></li>
+      <li class="menu-item">
+          <a href="{% url 'home' %}">Accueil</a>
+      </li>
+      {% if user.is_authenticated %}
       <li class="menu-item">
         Clients
         <ol class="sub-menu">
@@ -17,14 +21,23 @@
           <li class="menu-item"><a href="{% url 'list_exported' %}">Rapports exportés</a></li>
         </ol>
       </li>
-      <li class="menu-item"><a href="{% url 'list_invoice' %}">Facture</a>
-<!--        <ol class="sub-menu">-->
-<!--          <li class="menu-item"><a href="#">Facture</a></li>-->
-<!--          <li class="menu-item"><a href="#">Rapports</a></li>-->
-<!--          <li class="menu-item"><a href="#">Clients</a></li>-->
-<!--        </ol>-->
+      <li class="menu-item">
+          <a href="{% url 'list_invoice' %}">Facture</a>
       </li>
-      <li class="menu-item"><a href="#0">A propos</a></li>
     </ol>
+    <div class="user-links">
+        <a href="{% url 'profile' %}">Profil</a>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <a href="#" onclick="this.parentNode.submit()">Se déconnecter</a>
+        </form>
+    </div>
+    {% else %}
+    </ol>
+    <div class="user-links">
+            <a href="{% url 'login' %}">Se connecter</a>
+            <a href="{% url 'register' %}">Créer un compte</a>
+    </div>
+    {% endif %}
 </nav>
 </header>

@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="listing">
+<div class="list-report">
     <h2>Rapports commencés</h2>
+    <div class="card-container">
     {% for link in report_links %}
         {{ link|safe }}
     {% endfor %}
+    </div>
 </div>
 {% endblock %}

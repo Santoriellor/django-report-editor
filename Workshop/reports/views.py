@@ -22,6 +22,10 @@ def fill_table(request):
     return redirect('list_reports')
 
 
+def home(request):
+    return render(request, 'reports/home.html')
+
+
 def new_report(request):
     if request.method == 'POST':
         form = ReportForm(request.POST)
@@ -53,7 +57,7 @@ def new_report(request):
         form = ReportForm()
     return render(
         request,
-        'new_report.html',
+        'reports/new_report.html',
         {
             'form': form,
         })
@@ -110,7 +114,7 @@ def update_report(request, report_id):
 
     return render(
         request,
-        'new_report.html',
+        'reports/new_report.html',
         {
             'form': form,
         })
@@ -143,7 +147,7 @@ def read_report(request, report_id):
     tasks = ReportItem.objects.filter(report=report_id, item__in=task_items)
     # Filter report items corresponding to the material items
     materials = ReportItem.objects.filter(report=report_id, item__in=material_items)
-    return render(request, 'read_report.html', {'report': report, 'client': client, 'tasks': tasks, 'materials': materials})
+    return render(request, 'reports/read_report.html', {'report': report, 'client': client, 'tasks': tasks, 'materials': materials})
 
 
 def list_reports(request):
@@ -152,29 +156,32 @@ def list_reports(request):
         cursor.execute("SELECT * FROM reports_report WHERE exported = 0")
         rows = cursor.fetchall()
         report_links = []
-        for row in rows:
-            client_id = row[5]
-            if client_id:
-                report = get_object_or_404(Report, pk=row[0])
-                client = get_object_or_404(Client, pk=client_id)
-                text_report = report.date_report.strftime('%m/%d/%Y')
-                text_report += " - Rapport n°" + str(report.id) + " - "
-                text_report += client.last_name.capitalize()
-                url_read = reverse('read_report', kwargs={'report_id': report.id})
-                url_update = reverse('update_report', kwargs={'report_id': report.id})
-                url_delete = reverse('delete_report', kwargs={'report_id': report.id})
-                url_export = reverse('export_report', kwargs={'report_id': report.id})
-                row_str = "<div class='row'>"
-                row_str += f"<div class='item1'>{text_report}</div>"  # <a href='{url_read}'></a>
-                row_str += f"<div class='buttons'><a href='{url_read}'>Consulter</a>"
-                row_str += f"<a href='{url_update}'>Modifier</a>"
-                row_str += f"<a href='{url_delete}'>Supprimer</a>"
-                row_str += f"<a href='{url_export}'>Exporter</a></div>"
-                row_str += "</div>"
-                report_links.append(row_str)
+        if len(rows) == 0:
+            report_links.append("<p>Il n'y a pas de rapports commencés.</p>")
+        else:
+            for row in rows:
+                client_id = row[5]
+                if client_id:
+                    report = get_object_or_404(Report, pk=row[0])
+                    client = get_object_or_404(Client, pk=client_id)
+                    text_report = report.date_report.strftime('%m/%d/%Y')
+                    text_report += " - Rapport n°" + str(report.id) + "<br>"
+                    text_report += client.last_name.capitalize()
+                    url_read = reverse('read_report', kwargs={'report_id': report.id})
+                    url_update = reverse('update_report', kwargs={'report_id': report.id})
+                    url_delete = reverse('delete_report', kwargs={'report_id': report.id})
+                    url_export = reverse('export_report', kwargs={'report_id': report.id})
+                    row_str = "<div class='card'>"
+                    row_str += f"<div class='item1'>{text_report}</div>"
+                    row_str += f"<div class='buttons'><a href='{url_read}'>Consulter</a>"
+                    row_str += f"<a href='{url_update}'>Modifier</a>"
+                    row_str += f"</div><div class='buttons'><a href='{url_delete}' class='delete-link'>Supprimer</a>"
+                    row_str += f"<a href='{url_export}'>Exporter</a></div>"
+                    row_str += "</div>"
+                    report_links.append(row_str)
     # Pass the report_links list as a context variable
     context = {'report_links': report_links}
-    return render(request, 'list_report.html', context)
+    return render(request, 'reports/list_report.html', context)
 
 
 def list_exported(request):
@@ -183,24 +190,27 @@ def list_exported(request):
         cursor.execute("SELECT * FROM reports_report WHERE exported = 1 AND invoiced = 0")
         rows = cursor.fetchall()
         report_links = []
-        for row in rows:
-            client_id = row[5]
-            if client_id:
-                report = get_object_or_404(Report, pk=row[0])
-                client = get_object_or_404(Client, pk=client_id)
-                text_report = report.date_report.strftime('%m/%d/%Y') + " - Rapport n°" + str(
-                    report.id) + " - " + client.last_name.capitalize()
-                url_read = reverse('read_report', kwargs={'report_id': report.id})
-                url_export_pdf = reverse('export_report_pdf', kwargs={'report_id': report.id})
-                row_str = "<div class='row'>"
-                row_str += f"<div class='item1'>{text_report}</div>"
-                row_str += f"<div class='buttons'><a href='{url_read}'>Consulter</a>"
-                row_str += f"<a href='{url_export_pdf}'>Facture</a></div>"
-                row_str += "</div>"
-                report_links.append(row_str)
+        if len(rows) == 0:
+            report_links.append("<p>Il n'y a pas de rapports exportés.</p>")
+        else:
+            for row in rows:
+                client_id = row[5]
+                if client_id:
+                    report = get_object_or_404(Report, pk=row[0])
+                    client = get_object_or_404(Client, pk=client_id)
+                    text_report = report.date_report.strftime('%m/%d/%Y') + " - Rapport n°" + str(
+                        report.id) + " - " + client.last_name.capitalize()
+                    url_read = reverse('read_report', kwargs={'report_id': report.id})
+                    url_export_pdf = reverse('export_report_pdf', kwargs={'report_id': report.id})
+                    row_str = "<div class='card'>"
+                    row_str += f"<div class='item1'>{text_report}</div>"
+                    row_str += f"<div class='buttons'><a href='{url_read}'>Consulter</a>"
+                    row_str += f"<a href='{url_export_pdf}'>Facture</a></div>"
+                    row_str += "</div>"
+                    report_links.append(row_str)
     # Pass the report_links list as a context variable
     context = {'report_links': report_links}
-    return render(request, 'list_exported.html', context)
+    return render(request, 'reports/list_exported.html', context)
 
 
 def list_invoice(request):
@@ -215,7 +225,7 @@ def list_invoice(request):
         row_str += "</div>"
         invoice_links.append(row_str)
     # Pass the list of files to the template context
-    return render(request, 'list_invoice.html', {'invoice_links': invoice_links})
+    return render(request, 'reports/list_invoice.html', {'invoice_links': invoice_links})
 
 
 def export_report_pdf(request, report_id):
@@ -234,7 +244,7 @@ def new_client(request):
             return redirect('list_client')
     else:
         form = ClientForm()
-    return render(request, 'new_client.html', {'form': form})
+    return render(request, 'reports/new_client.html', {'form': form})
 
 
 def update_client(request, client_id):
@@ -246,7 +256,7 @@ def update_client(request, client_id):
             return redirect('list_client')  # Redirect to 'list_reports'
     else:
         form = ClientForm(instance=client)
-    return render(request, 'new_client.html', {'form': form})
+    return render(request, 'reports/new_client.html', {'form': form})
 
 
 def list_client(request):
@@ -261,20 +271,21 @@ def list_client(request):
             name_client = client.last_name.capitalize() + " " + client.first_name.capitalize()
             phone_client1 = "Tél. " + client.phone_number1
             phone_client2 = "Tél. " + client.phone_number2
+            email_client = "Email : " + client.email
             addr_client = "Adr: " + client.address
             url_new = reverse('new_client') + f"?infos_client={client_id}"
             url_update = reverse('update_client', kwargs={'client_id': client.id})
-            row_str = "<div class='row'>"
+            row_str = "<div class='card'>"
             row_str += f"<div class='item1'>{name_client}</div>"  # <a href='{url_new}'></a>
-            row_str += f"<div class='item2'>{phone_client1}</div>"
-            row_str += f"<div class='item2'>{phone_client2}</div>"
+            row_str += f"<div class='item2'>{phone_client1} - {phone_client2}</div>"
+            row_str += f"<div class='item2'>{email_client}</div>"
             row_str += f"<div class='item2'>{addr_client}</div>"
             row_str += f"<div class='buttons'><a href='{url_update}'>Modifier</a></div>"
             row_str += "</div>"
             client_links.append(row_str)
     # Pass the client_links list as a context variable
     context = {'client_links': client_links}
-    return render(request, 'list_client.html', context)
+    return render(request, 'reports/list_client.html', context)
 
 
 def get_motors(request):

@@ -119,3 +119,20 @@ $(document).ready(function() {
         });
     });
 });
+
+// add a confirm on delete button
+document.addEventListener('DOMContentLoaded', function() {
+  var deleteLinks = document.querySelectorAll('.delete-link');
+
+  deleteLinks.forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent the default action (i.e., following the link)
+
+      var confirmation = confirm('Are you sure you want to delete?');
+
+      if (confirmation) {
+        window.location.href = link.href; // Proceed with the delete action
+      }
+    });
+  });
+});

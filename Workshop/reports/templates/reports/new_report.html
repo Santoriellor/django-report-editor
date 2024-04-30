@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Rapport n° {{ form.instance.pk }}
+        {% else %}Nouveau rapport{% endif %}{% endblock %}
+
+{% block content %}
+<div class="report">
+    <h2 id="report_title">
+        {% if form.instance.pk %}
+        Rapport n° {{ form.instance.pk }}
+        {% else %}
+        Saisir un nouveau rapport
+        {% endif %}
+    </h2>
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="header-container">
+            <div class="row">
+                <div>
+                    <label for="id_date_report">{{ form.date_report.label|capitalize_first }}</label>
+                    {{ form.date_report }}
+                </div>
+                <div>
+                    <label for="id_client">{{ form.client.label|capitalize_first }}</label>
+                    {{ form.client }}
+                </div>
+                <div>
+                    <label for="id_motor_serial_number">{{ form.motor_serial_number.label|capitalize_first }}</label>
+                    {{ form.motor_serial_number }}
+                </div>
+            </div>
+            <div class="row">
+                <label for="id_info">{{ form.info.label|capitalize_first }}</label>
+                        {{ form.info }}
+            </div>
+        </fieldset>
+        <fieldset class="task-container">
+            <div class="column-container">
+                <div class="column">
+                {% total_count initial=-1 %}
+                {% for field in form %}
+                    {% if field.name|slice:":9" == "item_task" %}
+                        {% total_count as counter %}
+                        {% if counter|divisibleby:5 and counter != 0 %}
+                            </div><div class="column">
+                        {% endif %}
+                        <div><label>{{ field.label|capitalize_first }}</label>&nbsp; {{ field }} </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+            <div class="column-container">
+                <div class="column">
+                {% total_count initial=-1 %}
+                {% for field in form %}
+                    {% if field.name|slice:":13" == "item_material" %}
+                        {% total_count as counter %}
+                        {% if counter|divisibleby:5 and counter != 0 %}
+                            </div><div class="column">
+                        {% endif %}
+                        <div><label>{{ field.label|capitalize_first }}</label>&nbsp; {{ field }} </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        </fieldset>
+        {{ form.errors }}
+        <button type="submit">Enregistrer</button>
+    </form>
+</div>
+{% endblock %}

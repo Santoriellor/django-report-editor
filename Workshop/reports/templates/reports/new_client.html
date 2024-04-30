@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}{{ form.last_name.value|capitalize_first }} {{ form.first_name.value|capitalize_first }}
+        {% else %}Nouveau client{% endif %}{% endblock %}
+
+{% block content %}
+<div class="client">
+    <h2>
+        {% if form.instance.pk %}
+        {{ form.last_name.value|capitalize_first }} {{ form.first_name.value|capitalize_first }}
+        {% else %}
+        Nouveau client
+        {% endif %}
+    </h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="header-container">
+            <div class="row">
+                <div><label for="id_last_name">{{ form.last_name.label|capitalize_first }}</label>&nbsp;
+                    {{ form.last_name }}</div>
+                <div><label for="id_first_name">{{ form.first_name.label|capitalize_first }}</label>&nbsp;
+                        {{ form.first_name }}</div>
+                <div><label for="id_phone_number1">{{ form.phone_number1.label|capitalize_first }}</label>&nbsp;
+                        {{ form.phone_number1 }}</div>
+                <div><label for="id_phone_number2">{{ form.phone_number2.label|capitalize_first }}</label>&nbsp;
+                        {{ form.phone_number2 }}</div>
+                <div><label for="id_email">{{ form.email.label|capitalize_first }}</label>&nbsp;
+                        {{ form.email }}</div>
+            </div>
+            <div class="row">
+                <div><label for="id_client_info">{{ form.client_info.label|capitalize_first }}</label>
+                    {{ form.client_info }}</div>
+                <div><label for="id_address">{{ form.address.label|capitalize_first }}</label>
+                    {{ form.address }}</div>
+            </div>
+        </div>
+        {% for error in form.phone_number.errors %}
+        <span class="error">{{ error }}</span>
+        {% endfor %}
+        <button type="submit">Enregistrer</button>
+    </form>
+</div>
+{% endblock %}
